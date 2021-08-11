@@ -7,5 +7,4 @@
 </div>
 </template>
 
-<style scss scoped>
-</style>
+<style scss scoped />
