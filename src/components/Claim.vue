@@ -24,16 +24,15 @@ export default {
     justify-content: center;
     align-items: center;
     text-align: center;
+    color: #FFFFFF;
 }
 
 .claim {
-    color: #FFFFFF;
     font-size: 50px;
     margin: 0;
 }
 
 .subclaim {
-    color: #FFFFFF;
     font-size: 15px;
     margin: 20px 0 0 0;
 }
