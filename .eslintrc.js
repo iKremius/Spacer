@@ -14,6 +14,7 @@ module.exports = {
         'indent': 'off',
         'linebreak-style': 0,
         'eol-last': ["error", "never"],
+        'func-names': ["error", "never"],
         'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
     },
