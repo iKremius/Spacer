@@ -1,24 +1,23 @@
 <template>
   <div class="wrapper">
-    <div class="search">
-      <label for="txtSearch">Search</label>
-      <input id="txtSearch" type="text" name="search" v-model="searchValue" @input="handleInput" />
-      <ul>
-        <li v-for="item in results" :key="item.data[0].nasa_id">
-          <p>{{ item.data[0].description }}</p>
-        </li>
-      </ul>
-    </div>
+    <claim />
+    <searchInput />
   </div>
 </template>
 
 <script>
 import axios from 'axios';
 import debounce from 'lodash.debounce';
+import Claim from '@/components/Claim.vue';
+import SearchInput from '@/components/SearchInput.vue';
 
 const API = 'https://images-api.nasa.gov/search';
 
 export default {
+  components: {
+    Claim,
+    SearchInput,
+  },
   name: 'Search',
   data() {
     return {
@@ -46,27 +45,17 @@ export default {
 
 <style scss scoped>
 .wrapper {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0;
-  padding: 30px;
-  width: 100%;
-}
-
-.search {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-}
-
-.search input[type="text"] {
-  height: 30px;
-    border: 0;
-    border-bottom: 1px solid #000000;
-}
-
-.search label {
-  font-family: 'Montserrot, sans-serif';
+  justify-content: center;
+  background-image: url('../assets/background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 80% 0%;
 }
 </style>
