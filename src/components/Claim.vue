@@ -1,3 +1,4 @@
+<!-- eslint-disable -->
 <template>
 <div class="claimWrapper">
     <h1 class="claim">SPACER</h1>
