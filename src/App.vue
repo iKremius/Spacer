@@ -1,23 +1,54 @@
 <template>
   <div class="wrapper">
-    <heroImage />
-    <claim />
-    <searchInput />
+    <HeroImage />
+    <Claim />
+    <div class="searchWrapper">
+      <input
+          id="txtSearch"
+          autocomplete="off"
+          name="search"
+          v-model="searchValue"
+          @input="handleInput"
+      />
+    </div>
   </div>
 </template>
 
 <script>
+import axios from 'axios';
+import debounce from 'lodash.debounce';
 import HeroImage from '@/components/HeroImage.vue';
 import Claim from '@/components/Claim.vue';
-import SearchInput from '@/components/SearchInput.vue';
+
+const API = 'https://images-api.nasa.gov/search';
 
 export default {
   components: {
     HeroImage,
     Claim,
-    SearchInput,
   },
   name: 'App',
+  data() {
+      return {
+          searchValue: '',
+          results: [],
+      };
+  },
+  methods: {
+    handleInput: debounce(function () {
+      axios.get(`${API}?q=${this.searchValue}&media_type=image`)
+        .then((res) => {
+          if (this.searchValue !== null && this.searchValue !== '') {
+            this.results = res.data.collection.items;
+          } else {
+            this.results = [];
+          }
+        })
+        .catch((ex) => {
+          console.log(ex);
+        });
+    }, 500),
+  },
 };
 </script>
 
@@ -26,6 +57,8 @@ export default {
 
 * {
   box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -44,5 +77,35 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+.searchWrapper {
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
+
+.searchWrapper input {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 18px;
+    font-weight: 300;
+    height: 30px;
+    border: 0;
+    background: none;
+    border-bottom: 1px solid #FFFFFF;
+    transition: box-shadow .2s ease-out;
+}
+
+.searchWrapper input:focus {
+    outline: none;
+    box-shadow: 0 5px 10px -8px rgba(255, 255, 255, .5);
+}
+
+@media (min-width: 1024px) {
+    .searchWrapper input {
+        font-weight: 400;
+    }
 }
 </style>
