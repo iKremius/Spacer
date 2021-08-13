@@ -26,9 +26,9 @@ export default {
       },
   },
   methods: {
-      handleChange(e) {
+    handleChange(e) {
         this.$emit('input', e.target.value);
-      },
+    },
   },
 };
 </script>
