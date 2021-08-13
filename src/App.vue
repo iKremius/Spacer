@@ -1,15 +1,10 @@
+<!-- eslint-disable -->
 <template>
   <div class="wrapper">
     <HeroImage />
     <Claim />
     <div class="searchWrapper">
-      <input
-          id="txtSearch"
-          autocomplete="off"
-          name="search"
-          v-model="searchValue"
-          @input="handleInput"
-      />
+      <input id="txtSearch" autocomplete="off" name="search" v-model="searchValue" @input="handleInput" />
     </div>
   </div>
 </template>
@@ -30,19 +25,17 @@ export default {
   name: 'App',
   data() {
       return {
-          searchValue: '',
-          results: [],
+        loading: false,
+        step: 0,
+        searchValue: '',
+        results: [],
       };
   },
   methods: {
     handleInput: debounce(function () {
       axios.get(`${API}?q=${this.searchValue}&media_type=image`)
         .then((res) => {
-          if (this.searchValue !== null && this.searchValue !== '') {
-            this.results = res.data.collection.items;
-          } else {
-            this.results = [];
-          }
+          this.results = this.searchValue !== null && this.searchValue !== '' ? res.data.collection.items: [];
         })
         .catch((ex) => {
           console.log(ex);
