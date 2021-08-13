@@ -16,14 +16,14 @@
 export default {
   name: 'Search',
   props: {
-      value: {
-          type: String,
-          required: true,
-      },
-      dark: {
-          type: Boolean,
-          default: false,
-      },
+    value: {
+        type: String,
+        required: true,
+    },
+    dark: {
+        type: Boolean,
+        default: false,
+    },
   },
   methods: {
     handleChange(e) {
