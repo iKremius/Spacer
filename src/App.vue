@@ -1,11 +1,9 @@
 <!-- eslint-disable -->
 <template>
-  <div class="wrapper">
-    <HeroImage />
-    <Claim />
-    <div class="searchWrapper">
-      <input id="txtSearch" autocomplete="off" name="search" v-model="searchValue" @input="handleInput" />
-    </div>
+  <div :class="[{ flexStart: step === 1 }, 'wrapper']">
+    <HeroImage v-if="step === 0" />
+    <Claim v-if="step === 0" />
+    <Search v-model="searchValue" @input="handleInput" :dark="step === 1" />
   </div>
 </template>
 
@@ -14,6 +12,7 @@ import axios from 'axios';
 import debounce from 'lodash.debounce';
 import HeroImage from '@/components/HeroImage.vue';
 import Claim from '@/components/Claim.vue';
+import Search from '@/components/Search.vue';
 
 const API = 'https://images-api.nasa.gov/search';
 
@@ -21,6 +20,7 @@ export default {
   components: {
     HeroImage,
     Claim,
+    Search,
   },
   name: 'App',
   data() {
@@ -33,9 +33,17 @@ export default {
   },
   methods: {
     handleInput: debounce(function () {
+      this.loading = true;
       axios.get(`${API}?q=${this.searchValue}&media_type=image`)
         .then((res) => {
-          this.results = this.searchValue !== null && this.searchValue !== '' ? res.data.collection.items : [];
+          this.loading = false;
+          if (this.searchValue !== null && this.searchValue !== '') {
+            this.results = res.data.collection.items;
+            this.step = 1;
+          } else {
+             this.results = [];
+             this.step = 0;
+           }
         })
         .catch((ex) => {
           console.log(ex);
@@ -72,33 +80,7 @@ body {
   justify-content: center;
 }
 
-.searchWrapper {
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-    width: 300px;
-}
-
-.searchWrapper input {
-    color: #FFFFFF;
-    text-align: center;
-    font-size: 18px;
-    font-weight: 300;
-    height: 30px;
-    border: 0;
-    background: none;
-    border-bottom: 1px solid #FFFFFF;
-    transition: box-shadow .2s ease-out;
-}
-
-.searchWrapper input:focus {
-    outline: none;
-    box-shadow: 0 5px 10px -8px rgba(255, 255, 255, .5);
-}
-
-@media (min-width: 1024px) {
-    .searchWrapper input {
-        font-weight: 400;
-    }
+.flexStart {
+  justify-content: flex-start;
 }
 </style>
